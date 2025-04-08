@@ -59,8 +59,8 @@ public class NewsCategoryQueueable implements Queueable, Database.AllowsCallouts
             updateCategory(this.categoryId);
         } else {
             // - Update category if last page
-            Logger.info('No more articles to process for category:').addTag('NewsAPI');
-            Logger.saveLog(); 
+            //Logger.info('No more articles to process for category:').addTag('NewsAPI');
+            //Logger.saveLog(); 
         }
     }
 
@@ -87,8 +87,8 @@ public class NewsCategoryQueueable implements Queueable, Database.AllowsCallouts
     private Id enqueueNextJob() {
         NewsCategoryQueueable nextJob = new NewsCategoryQueueable(this.categoryId, this.categoryName, this.pages, this.currentPage);
         ID jobID = System.enqueueJob(nextJob);
-        Logger.info('Starting another queueable job: ' + jobID).addTag('NewsAPI');
-        Logger.saveLog();
+        //Logger.info('Starting another queueable job: ' + jobID).addTag('NewsAPI');
+        //Logger.saveLog();
         return jobID;
     }
 

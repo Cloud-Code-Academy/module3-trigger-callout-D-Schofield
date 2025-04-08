@@ -80,8 +80,8 @@ public with sharing class NewsAPIService {
             return res;
         } else {
             String logMsg = 'Callout error. Status Code: ' + res.getStatusCode() + ' | Body: ' + res.getBody();
-            Logger.error(logMsg).addTag('NewsAPI');
-            Logger.saveLog();
+            //Logger.error(logMsg).addTag('NewsAPI');
+            //Logger.saveLog();
             throw new NewsAPIException(logMsg);
         }
     }
@@ -101,8 +101,8 @@ public with sharing class NewsAPIService {
         catch(Exception parsingError) {
             // - Handle exceptions
             String errorMsg = 'Error parsing response to wrapper: ' + parsingError.getMessage() + '.';
-            Logger.error(errorMsg).addTag('NewsAPI');
-            Logger.saveLog();
+            //Logger.error(errorMsg).addTag('NewsAPI');
+            //Logger.saveLog();
             throw new NewsAPIException (errorMsg);
         }
     }
