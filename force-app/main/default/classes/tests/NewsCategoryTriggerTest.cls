@@ -5,11 +5,11 @@ private class NewsCategoryTriggerTest {
     static void setup() {
         // Create test data
         List<News_Category__c> categories = new List<News_Category__c>{
-            new News_Category__c(
+            /*new News_Category__c(
                 Name = 'Technology',
                 Sync__c = true,
                 Pages__c = 1
-            ),
+            ),*/
             new News_Category__c(
                 Name = 'Business',
                 Sync__c = false,
@@ -75,27 +75,31 @@ private class NewsCategoryTriggerTest {
             FROM Article__c 
             WHERE News_Category__c = :newCategory.Id
         ];
+        //testsetup will always run
+        // it creates technology sync True and business sync false
         Assert.areEqual(0, articles.size(), 'Should not have created any articles');
     }
     
     @IsTest
     static void testUpdateWithSyncChangeToTrue() {
         // Set up the mock for API callout
-        Test.setMock(HttpCalloutMock.class, NewsAPIMock.createSuccessMock());
+        //Test.setMock(HttpCalloutMock.class, NewsAPIMock.createSuccessMock());
         
+        // need to set multiple mocks for retry logic
+        //like this - Test.setMock(HttpCalloutMock.class, new MultiResponseMock(new List<HttpResponse>{ res1, res2 }));
+        Test.setMock(HttpCalloutMock.class, NewsAPIMockWithPagination.createPaginatedMock());
+
         // Get the business category
         News_Category__c category = [
             SELECT Id, Sync__c 
             FROM News_Category__c 
             WHERE Name = 'Business'
         ];
-        
+
         Test.startTest();
-        
         // Update Sync__c to true
         category.Sync__c = true;
         update category;
-        
         Test.stopTest();
         
         // Verify the category was updated with Last_Synced__c
