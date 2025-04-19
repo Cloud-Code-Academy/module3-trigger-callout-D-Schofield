@@ -3,13 +3,23 @@ private class NewsCategoryTriggerTest {
     
     @TestSetup
     static void setup() {
+        // Set org-wide default value
+        Queueable_Switch__c orgDefaults = new Queueable_Switch__c(
+            SetupOwnerId = UserInfo.getOrganizationId(), // Important!
+            Run_News_API__c = true
+        );
+        insert orgDefaults;
+
         // Create test data
         List<News_Category__c> categories = new List<News_Category__c>{
+
+            // caused error testInsertWithSyncFalse if this is inserted in testSetup
             /*new News_Category__c(
                 Name = 'Technology',
-                Sync__c = true,
+                Sync__c = true,  
                 Pages__c = 1
             ),*/
+
             new News_Category__c(
                 Name = 'Business',
                 Sync__c = false,
@@ -75,7 +85,7 @@ private class NewsCategoryTriggerTest {
             FROM Article__c 
             WHERE News_Category__c = :newCategory.Id
         ];
-        //testsetup will always run
+        // testsetup will always run
         // it creates technology sync True and business sync false
         Assert.areEqual(0, articles.size(), 'Should not have created any articles');
     }
@@ -83,11 +93,7 @@ private class NewsCategoryTriggerTest {
     @IsTest
     static void testUpdateWithSyncChangeToTrue() {
         // Set up the mock for API callout
-        //Test.setMock(HttpCalloutMock.class, NewsAPIMock.createSuccessMock());
-        
-        // need to set multiple mocks for retry logic
-        //like this - Test.setMock(HttpCalloutMock.class, new MultiResponseMock(new List<HttpResponse>{ res1, res2 }));
-        Test.setMock(HttpCalloutMock.class, NewsAPIMockWithPagination.createPaginatedMock());
+        Test.setMock(HttpCalloutMock.class, NewsAPIMock.createSuccessMock());
 
         // Get the business category
         News_Category__c category = [
