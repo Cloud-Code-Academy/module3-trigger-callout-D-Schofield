@@ -5,10 +5,7 @@ public with sharing class NewsAPIService {
     // TODO: Define API endpoint constants
     private static final String API_NAMED_CREDENTIAL = 'callout:NewsAPI'; //https://newsapi.org
     private static final String API_ENDPOINT = '/v2/top-headlines';
-    
-    // TODO: Define default parameters
-    private static final Integer DEFAULT_PAGE_SIZE = 20; 
-    
+
     /**
      * Fetches top headlines for a specified category with pagination support
      * @param category The news category (business, entertainment, general, health, science, sports, technology)
@@ -17,13 +14,10 @@ public with sharing class NewsAPIService {
      * @return NewsAPIResponse The wrapper object containing the API response
      */
     public static NewsAPIResponse getTopHeadlinesByCategory(String category, Integer pageSize, Integer page) {
-        // TODO: Implement method to fetch headlines by category
-        // - Validate and set defaults for parameters
-        // - Build the request URL
-        // - Make the callout
-        // - Parse and return the response
-        
-        return null;
+        String endpoint = API_NAMED_CREDENTIAL + API_ENDPOINT + '?category=' + category + '&pageSize=' + pageSize + '&page=' + page;
+        HttpResponse res = makeCallout(endpoint);
+        NewsAPIResponse newsRS = parseResponse(res.getBody());
+        return newsRS;
     }
     
     /**
@@ -32,12 +26,21 @@ public with sharing class NewsAPIService {
      * @return HttpResponse The HTTP response
      */
     private static HttpResponse makeCallout(String endpoint) {
-        // TODO: Implement HTTP callout
-        // - Create and configure HTTP request
-        // - Make the callout
-        // - Handle exceptions
+        HttpRequest req = new HttpRequest(); 
+        req.setEndpoint(endpoint); 
+        req.setMethod('GET');
+        req.setHeader('Content-Type', 'application/json');
+
+        HttpResponse res = new Http().send(req);
         
-        return null;
+        if(res.getStatusCode() == 200) {
+            return res;
+        } else {
+            String logMsg = 'Callout error. Status Code: ' + res.getStatusCode() + ' | Body: ' + res.getBody();
+            //Logger.error(logMsg).addTag('NewsAPI');
+            //Logger.saveLog();
+            throw new NewsAPIException(logMsg);
+        }
     }
     
     /**
@@ -46,13 +49,18 @@ public with sharing class NewsAPIService {
      * @return NewsAPIResponse The parsed response object
      */
     private static NewsAPIResponse parseResponse(String jsonResponse) {
-        // TODO: Implement JSON parsing
-        // - Deserialize JSON to NewsAPIResponse
-        // - Handle exceptions
-        
-        return null;
+        try{
+            NewsAPIResponse newsWrapper = (NewsAPIResponse) JSON.deserialize(jsonResponse, NewsAPIResponse.class);
+            return newsWrapper;
+        }
+        catch(Exception parsingError) {
+            String errorMsg = 'Error parsing response to wrapper: ' + parsingError.getMessage() + '.';
+            //Logger.error(errorMsg).addTag('NewsAPI');
+            //Logger.saveLog();
+            throw new NewsAPIException (errorMsg);
+        }
     }
-    
+   
     /**
      * Custom exception class for NewsAPI errors
      */
