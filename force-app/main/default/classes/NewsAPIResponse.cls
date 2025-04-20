@@ -32,6 +32,8 @@ public class NewsAPIResponse {
                 publishedAtIso = this.publishedAt.replace('T', ' ').replace('Z', ''); // 2024-03-28T12:00:00Z -> 2024-03-28 12:00:00
                 publishedAtDT = Datetime.valueOfGmt(publishedAtIso);
             }
+            // Using title for Name, which has a max length of 80 characters in Salesforce
+            String trimmedTitle = this.title.length() > 80 ? this.title.substring(0, 80) : this.title;
             Article__c article = new Article__c(
                 Author__c       = this.author,
                 Category__c     = category.Name,
@@ -40,6 +42,7 @@ public class NewsAPIResponse {
                 News_Category__c = category.Id,
                 Published_At__c = publishedAtDT,
                 Source__c       = this.source.name,
+                Name            = trimmedTitle,
                 Title__c        = this.title,
                 url__c          = this.url,
                 urlToImage__c   = this.urlToImage
