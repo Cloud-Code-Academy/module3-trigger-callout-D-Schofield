@@ -27,11 +27,10 @@ public with sharing class NewsCategoryTriggerHandler {
      * @param categoriesToSync List of News_Category__c records to sync
      */
     private static void syncCategoriesWithQueueable(List<News_Category__c> categoriesToSync) {
-        List<News_Category__c> categoriesToUpdate = new List<News_Category__c>();
-        for(News_Category__c category : categoriesToSync) {
+        for (News_Category__c category : categoriesToSync) {
             NewsCategoryQueueable queueableJob = new NewsCategoryQueueable(category.Id); 
             System.enqueueJob(queueableJob);
         }
     }
     
-} 
+}
