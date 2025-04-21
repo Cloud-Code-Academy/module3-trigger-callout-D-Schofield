@@ -34,6 +34,7 @@ public class NewsAPIResponse {
             }
             // Using title for Name, which has a max length of 80 characters in Salesforce
             String trimmedTitle = this.title.length() > 80 ? this.title.substring(0, 80) : this.title;
+            String trimmedImageUrl = this.urlToImage != null && this.urlToImage.length() > 255 ? 'imageUrl not available' : this.urlToImage;
             Article__c article = new Article__c(
                 Author__c       = this.author,
                 Category__c     = category.Name,
@@ -45,7 +46,7 @@ public class NewsAPIResponse {
                 Name            = trimmedTitle,
                 Title__c        = this.title,
                 url__c          = this.url,
-                urlToImage__c   = this.urlToImage
+                urlToImage__c   = trimmedImageUrl
             );
             return article;
         }
