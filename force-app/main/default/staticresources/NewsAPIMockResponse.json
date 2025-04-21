@@ -1,0 +1,32 @@
+{
+	"status": "ok",
+	"totalResults": 24,
+	"articles": [
+		{
+			"source": {
+				"id": "bbc-news",
+				"name": "BBC News"
+			},
+			"author": "Lena Whitaker",
+			"title": "Tech Stocks Slide Amid Regulatory Concerns",
+			"description": "Major tech firms saw stock declines as new regulations are expected to impact profitability.",
+			"url": "https://www.fakenewsnetwork.com/articles/tech-stocks-slide-2025",
+			"urlToImage": "https://www.fakenewsnetwork.com/images/tech-slide.jpg",
+			"publishedAt": "2025-04-04T15:33:21Z",
+			"content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec justo nec nisi posuere tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae."
+		},
+		{
+			"source": {
+				"id": "reuters",
+				"name": "Reuters"
+			},
+			"author": "Marcus Jennings",
+			"title": "Automakers Brace for Impact as Tariffs Take Effect",
+			"description": "Manufacturers are evaluating cost structures and supply chains as tariffs go into effect.",
+			"url": "https://www.fakenewsnetwork.com/articles/automakers-tariff-impact-2025",
+			"urlToImage": "https://www.fakenewsnetwork.com/images/auto-tariffs.jpg",
+			"publishedAt": "2025-04-04T15:33:21Z",
+			"content": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta."
+		}
+	]
+}
